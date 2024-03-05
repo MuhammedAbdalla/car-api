@@ -23,7 +23,7 @@ CREATE TABLE Sensors.LiDAR (
 CREATE TABLE Sensors.Camera (
     id INT PRIMARY KEY IDENTITY,
     time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
-    image_data BLOB,
+    image_data VARBINARY (MAX),
 );
 
 -- CAR
