@@ -9,7 +9,7 @@ CREATE TABLE Users (
     permission INT NOT NULL
 );
 
-CREATE TABLE AccessLogs (
+CREATE TABLE Logs.AccessLogs (
     id INT PRIMARY KEY IDENTITY,
     user_id INTEGER,
     time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
@@ -18,7 +18,7 @@ CREATE TABLE AccessLogs (
 );
 
 -- Wheel Module
-CREATE TABLE WheelCommands (
+CREATE TABLE Commands.WheelCommands (
     id INTEGER PRIMARY KEY IDENTITY,
     time_stamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     speed FLOAT,
@@ -28,21 +28,21 @@ CREATE TABLE WheelCommands (
 );
 
 -- LiDAR Module
-CREATE TABLE LidarScans (
+CREATE TABLE Sensors.LiDAR (
     id INT PRIMARY KEY IDENTITY,
     time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
     distance_readings FLOAT  
 );
 
 -- Camera Module
-CREATE TABLE CameraFeeds (
+CREATE TABLE Sensors.Camera (
     id INT PRIMARY KEY IDENTITY,
     time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
     image_data BLOB,
 );
 
 -- Visual Object Detection Module
-CREATE TABLE DetectedObjects (
+CREATE TABLE Car.DetectedObjects (
     id INT PRIMARY KEY IDENTITY,
     camera_feed_id INT,
     time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
@@ -53,7 +53,7 @@ CREATE TABLE DetectedObjects (
 );
 
 -- Navigation Module
-CREATE TABLE NavigationRoutes (
+CREATE TABLE Car.NavigationRoutes (
     id INTEGER PRIMARY KEY IDENTITY,
     start_point FLOAT,
     end_point FLOAT,
@@ -61,7 +61,7 @@ CREATE TABLE NavigationRoutes (
 );
 
 -- Collision Avoidance Detection
-CREATE TABLE CollisionEvents (
+CREATE TABLE Car.CollisionDetection (
     id INT PRIMARY KEY IDENTITY,
     time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
     severity INT,
@@ -69,7 +69,7 @@ CREATE TABLE CollisionEvents (
 );
 
 -- Monitoring
-CREATE TABLE SystemHealth (
+CREATE TABLE Logs.SystemHealth (
     id INT PRIMARY KEY IDENTITY,
     time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
     component CHAR (64),
