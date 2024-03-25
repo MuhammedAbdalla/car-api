@@ -79,7 +79,15 @@ class Navigation(Path):
 
 '''
 class Sensor():
-    def __init__(sensor):
+    sensorName = None
+    sensorType = None
+    def __init__(self, sensorName):
+        self.sensorName = sensorName
+    
+    def assignType():
+        pass
+
+    def assignPort():
         pass
 
 
@@ -109,45 +117,64 @@ class CollisionDetection:
 
 
 class Wheel():
-    wheels = None
-    def __init__(self):
-        self.wheels = []
-        pass
-    
-    def addWheel(self, name, reverse=False):
-        self.wheels.append({"name": name, "speed": 0, "direction": 0, "reverse": False})
-        self.updateChassis()
-    
-    def getWheelProperties(self, wheel):
-        for wheel in self.wheels:
-            if wheel["name"] == wheel:
-                return wheel
+    name = None
+    speed = None
+    direction = None
+    reverse = None
 
-    def setWheelProperties(self, wheel, property, val):
-        for wheel in self.wheels:
-            if wheel["name"] == wheel:
-                wheel[property] = val
-        self.updateChassis()
+    def __init__(self, name):
+        self.name = name
+        self.speed = 0
+        self.direction = 0
+        self.reverse = False
 
     def getSpeed(self, wheel):
-        properties = self.getWheelProperties(wheel)
-        return properties["speed"]
+        return self.speed
 
     def getDirection(self, wheel):
-        properties = self.getWheelProperties(wheel)
-        return properties["direction"]
-
+        return self.direction
+            
     def setSpeed(self, wheel, val):
         # try catch for numerical value, catch -> error log
-        self.setWheelProperties(wheel, "speed", val)
+        self.speed = val
 
     def setDirection(self, wheel, val):
         # try catch for numerical value, catch -> error log
-        self.setWheelProperties(wheel, "direction", val)
+        self.direction = val
 
     def setReverse(self, wheel, val):
         # try catch for boolean value, catch -> error log
-        self.setWheelProperties(wheel, "reverse", val)
+        self.reverse = val
 
+class Chassis(Wheel):
+    wheels = None
+    wheelGroups = None
+    tankMode = False
+
+    def __init__(self):
+        self.wheels = []
+        self.wheelGroups = []
+        pass
+    
+    def addWheel(self, nameWheel):
+        wheel = Wheel(name=nameWheel)
+        self.wheels.append(wheel)
+        self.updateChassis()
+
+    def removeWheel(self, name):
+        idx = self.wheels.index(self.getWheel(name))
+        if idx > -1:
+            self.wheels.pop(idx)
+        self.updateChassis()
+
+    def getWheel(self, wheel):
+        for wheel in self.wheels:
+            if wheel.name == wheel:
+                return wheel
+    
+    def createWheelGroup(self, wheelGroupID, wheels):
+        self.wheelGroups.append({"id":wheelGroupID, "wheels":[]})
+        self.updateChassis()
+    
     def updateChassis(self):
         pass
