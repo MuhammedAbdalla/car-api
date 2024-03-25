@@ -108,3 +108,46 @@ class CollisionDetection:
         pass
 
 
+class Wheel():
+    wheels = None
+    def __init__(self):
+        self.wheels = []
+        pass
+    
+    def addWheel(self, name, reverse=False):
+        self.wheels.append({"name": name, "speed": 0, "direction": 0, "reverse": False})
+        self.updateChassis()
+    
+    def getWheelProperties(self, wheel):
+        for wheel in self.wheels:
+            if wheel["name"] == wheel:
+                return wheel
+
+    def setWheelProperties(self, wheel, property, val):
+        for wheel in self.wheels:
+            if wheel["name"] == wheel:
+                wheel[property] = val
+        self.updateChassis()
+
+    def getSpeed(self, wheel):
+        properties = self.getWheelProperties(wheel)
+        return properties["speed"]
+
+    def getDirection(self, wheel):
+        properties = self.getWheelProperties(wheel)
+        return properties["direction"]
+
+    def setSpeed(self, wheel, val):
+        # try catch for numerical value, catch -> error log
+        self.setWheelProperties(wheel, "speed", val)
+
+    def setDirection(self, wheel, val):
+        # try catch for numerical value, catch -> error log
+        self.setWheelProperties(wheel, "direction", val)
+
+    def setReverse(self, wheel, val):
+        # try catch for boolean value, catch -> error log
+        self.setWheelProperties(wheel, "reverse", val)
+
+    def updateChassis(self):
+        pass
