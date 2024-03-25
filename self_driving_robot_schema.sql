@@ -31,7 +31,7 @@ CREATE TABLE Car.Users (
     id INT PRIMARY KEY IDENTITY,
     username VARCHAR (64) NOT NULL,
     password_hash char (128) NOT NULL,
-    permission INT NOT NULL
+    permission INT NOT NULL DEFAULT 0
 );
 
 -- Visual Object Detection Module
@@ -53,7 +53,6 @@ CREATE TABLE Car.NavigationRoutes (
     created_at DATETIME2 DEFAULT CURRENT_TIMESTAMP
 );
 
--- LOGS
 -- Collision Avoidance Detection
 CREATE TABLE Car.CollisionDetection (
     id INT PRIMARY KEY IDENTITY,
@@ -62,6 +61,7 @@ CREATE TABLE Car.CollisionDetection (
     information TEXT
 );
 
+-- LOGS
 CREATE TABLE Logs.AccessLogs (
     id INT PRIMARY KEY IDENTITY,
     user_id INTEGER,
@@ -69,16 +69,6 @@ CREATE TABLE Logs.AccessLogs (
     command TEXT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES Car.Users(id)
 );
-
--- Monitoring
-CREATE TABLE Logs.SystemHealth (
-    id INT PRIMARY KEY IDENTITY,
-    time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
-    component CHAR (64),
-    component_status CHAR (64),
-    component_information CHAR (64)
-);
-
 
 -- Wheel Module
 CREATE TABLE Logs.WheelCommands (
@@ -88,4 +78,13 @@ CREATE TABLE Logs.WheelCommands (
     direction VARCHAR (64),
     direction_angle FLOAT,
     duration INT
+);
+
+-- Monitoring
+CREATE TABLE Logs.SystemHealth (
+    id INT PRIMARY KEY IDENTITY,
+    time_stamp DATETIME2 DEFAULT CURRENT_TIMESTAMP,
+    component CHAR (64),
+    component_status CHAR (64),
+    component_information CHAR (64)
 );

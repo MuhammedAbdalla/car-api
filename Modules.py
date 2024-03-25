@@ -2,6 +2,8 @@
 # car-api
 # API.py
 
+import logging
+
 '''
 User Stories:
 
@@ -104,3 +106,5 @@ class CollisionDetection:
 
     def detect(self):
         pass
+
+
