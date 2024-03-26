@@ -3,6 +3,7 @@
 # API.py
 
 import logging
+import random
 
 '''
 User Stories:
@@ -35,11 +36,10 @@ User Stories:
         0 represents no distance traveled or no turn
         limits are bounded by the wheel turn limit
 '''
-class Path:
+class Path():
     path = None
-    def __init__(self):
-        self.path = []
-        pass
+    def __init__(self, distance, direction):
+        self.path = (distance, direction)
 
 
 
@@ -56,13 +56,17 @@ class Path:
         navigate()
         
 '''
-class Navigation(Path):
-    path = None
-    def __init__(self, path=Path(), start=0,end=0):
-        pass
+class Navigation():
+    paths = None
+    def __init__(self):
+        self.paths = []
+    
+    def addPath(self, path: Path):
+        if isinstance(path, Path):
+            self.paths.append(path)
 
-    def navigate():
-        pass
+    def getPath(self):
+        return self.paths.pop(0)
 
 
 
@@ -81,14 +85,19 @@ class Navigation(Path):
 class Sensor():
     sensorName = None
     sensorType = None
-    def __init__(self, sensorName):
-        self.sensorName = sensorName
-    
-    def assignType():
-        pass
+    sensorPort = None
+    testMode = False
 
-    def assignPort():
-        pass
+    def __init__(self, sensorName, sensorType, sensorPort, testMode):
+            self.sensorName = sensorName
+            self.sensorType = sensorType
+            self.sensorPort = sensorPort
+            self.testMode = testMode
+
+    def getData(self):
+        if self.testMode:
+            return random.random()*100
+        return None
 
 
 '''
@@ -106,11 +115,13 @@ class Sensor():
 
 
 '''
-class CollisionDetection:
+class CollisionDetection():
     sensors = None
     threshold_redirect = None
-    def __init__(self, sensors=list(Sensor), threshold_redirect=0):
-        pass
+    def __init__(self, threshold_redirect):
+        self.sensors = []
+        self.threshold_redirect = threshold_redirect
+        
 
     def detect(self):
         pass
@@ -146,7 +157,7 @@ class Wheel():
         # try catch for boolean value, catch -> error log
         self.reverse = val
 
-class Chassis(Wheel):
+class Chassis():
     wheels = None
     wheelGroups = None
     tankMode = False
