@@ -34,19 +34,21 @@ def test_modules():
 
 @pytest.mark.asyncio
 async def test_queue():
-    sensorQueue = SensorQueue(4, 128)
+    sensorQueue = SensorQueue(128, 0.75)
     # Usage example
     for n in range(32):
-        sensor = Sensor(f"SENSOR{n}", f"TEST_SENSOR-{n}", 8080, True)
+        sensor = Sensor(f"TEST_SENSOR[{n}]", f"T.XXX", 8080, testMode=True)
         sensorQueue.addSensor(sensor)  
-    logging.debug("sensors added to queue")
+    logging.debug("added sensors to queue")
 
-    results = await sensorQueue.processSensors(timeout=3)
-    print(results)
-    assert 1 == 1
-
+    results = await sensorQueue.processQueue()
+    logging.debug("results:")
+    for sensor, result in results:  
+        logging.debug(f"\t{sensor.name} : {result}")
+    
 
     logging.debug("queued sensors processed")
+    assert 1==1
 
 
 if __name__ == "__main__":

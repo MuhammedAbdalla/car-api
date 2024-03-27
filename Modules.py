@@ -90,11 +90,11 @@ class Sensor():
     testMode = False
 
     def __init__(self, sensorName, sensorType, sensorPort, testMode):
-            self.sensorName = sensorName
+            self.name = sensorName
             self.sensorType = sensorType
             self.sensorPort = sensorPort
             self.testMode = testMode
-            self.name = f"{self.sensorName}-{self.sensorType}"
+            
     async def getData(self):
         if self.testMode:
             await asyncio.sleep(random.random())
@@ -145,21 +145,21 @@ class Wheel():
         self.direction = 0
         self.reverse = False
 
-    def getSpeed(self, wheel):
+    def getSpeed(self):
         return self.speed
 
-    def getDirection(self, wheel):
+    def getDirection(self):
         return self.direction
             
-    def setSpeed(self, wheel, val):
+    def setSpeed(self, val):
         # try catch for numerical value, catch -> error log
         self.speed = val
 
-    def setDirection(self, wheel, val):
+    def setDirection(self, val):
         # try catch for numerical value, catch -> error log
         self.direction = val
 
-    def setReverse(self, wheel, val):
+    def setReverse(self, val):
         # try catch for boolean value, catch -> error log
         self.reverse = val
 
