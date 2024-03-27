@@ -35,11 +35,12 @@ def test_modules():
 @pytest.mark.asyncio
 async def test_queue():
     sensorQueue = SensorQueue(128, 0.75)
+    logging.debug(f"Creating Sensor Queue | max size : 128 | timeout : {sensorQueue.timeout}")
     # Usage example
     for n in range(32):
         sensor = Sensor(f"TEST_SENSOR[{n}]", f"T.XXX", 8080, testMode=True)
         sensorQueue.addSensor(sensor)  
-    logging.debug("added sensors to queue")
+    logging.debug(f"added 32 sensors to queue")
 
     results = await sensorQueue.processQueue()
     logging.debug("results:")
