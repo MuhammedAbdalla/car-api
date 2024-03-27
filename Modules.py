@@ -4,6 +4,7 @@
 
 import logging
 import random
+import asyncio
 
 '''
 User Stories:
@@ -93,10 +94,15 @@ class Sensor():
             self.sensorType = sensorType
             self.sensorPort = sensorPort
             self.testMode = testMode
-
-    def getData(self):
+            self.name = f"{self.sensorName}-{self.sensorType}"
+    async def getData(self):
         if self.testMode:
+            await asyncio.sleep(random.random())
             return random.random()*100
+        else:
+            # pyserial to use serial communication for sensors
+            # this would also use asyncio methods to retrieve data
+            pass
         return None
 
 
