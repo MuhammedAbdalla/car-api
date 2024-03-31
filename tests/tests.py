@@ -32,6 +32,9 @@ def test_monitor():
 def test_modules():
     pass
 
+def test_db():
+    pass
+
 @pytest.mark.asyncio
 async def test_queue():
     sensorQueue = SensorQueue(128, 0.75)

@@ -2,6 +2,10 @@
 -- Authentication and Authorization Module
 -- 64 bit size username
 -- MD5 Hash 128 bits
+
+-- CREATE DATABASE CAR_API;
+-- GO
+
 CREATE SCHEMA Sensors;
 GO
 
@@ -11,6 +15,7 @@ GO
 CREATE SCHEMA Logs;
 GO
 
+USE CAR_API;
 -- SENSORS
 -- LiDAR Module
 CREATE TABLE Sensors.LiDAR (
