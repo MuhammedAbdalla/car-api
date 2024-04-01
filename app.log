@@ -1,0 +1,4 @@
+2024-03-31 15:38:32,921 [38732 root] WARNING: SQL DB: Car.Users: duplicates found
+2024-03-31 15:38:43,499 [30952 root] WARNING: SQL DB: Car.Users: duplicates found
+2024-03-31 15:39:07,948 [37584 root] WARNING: SQL DB: Car.Users: duplicates found
+2024-03-31 15:39:14,260 [39188 root] WARNING: SQL DB: Car.Users: duplicates found
