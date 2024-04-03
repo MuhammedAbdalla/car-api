@@ -1,21 +1,37 @@
 
+-- Muhammed Abdalla & Ahmet
 -- Authentication and Authorization Module
 -- 64 bit size username
 -- MD5 Hash 128 bits
 
--- CREATE DATABASE CAR_API;
--- GO
-
-CREATE SCHEMA Sensors;
-GO
-
-CREATE SCHEMA Car;
-GO
-
-CREATE SCHEMA Logs;
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'CAR_API')
+BEGIN
+    CREATE DATABASE CAR_API;
+END
 GO
 
 USE CAR_API;
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'Sensors')
+BEGIN
+    EXEC('CREATE SCHEMA Sensors');
+    PRINT 'Sensors Schema created successfully';
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'Car')
+BEGIN
+    EXEC('CREATE SCHEMA Car');
+    PRINT 'Car Schema created successfully';
+END
+
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'Logs')
+BEGIN
+    EXEC('CREATE SCHEMA Logs');
+    PRINT 'Logs Schema created successfully';
+End
+
 -- SENSORS
 -- LiDAR Module
 CREATE TABLE Sensors.LiDAR (

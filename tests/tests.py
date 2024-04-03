@@ -1,3 +1,4 @@
+# top level
 import pytest
 import cProfile
 import logging
@@ -6,9 +7,9 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# top level
 from Monitor import setup_logging
-from Modules import Sensor
+from Authentication import *
+from Modules import *
 from QueueSystem import SensorQueue  # Import the sensor classes
 
 # Set up logging
@@ -21,7 +22,18 @@ def test_format():
     pass
 
 def test_authentication():
-    pass
+    logging.debug("TESTING AUTHENTICATION MODULE")
+    # Define your connection parameters
+    server = 'MUHABDALLA\\SQLEXPRESS'  # The double backslashes are necessary in Python strings
+    database = 'CAR_API'  # Replace with your database name
+    conn = connectDB(server, database)
+    fetchData(conn, "SELECT * FROM Car.Users", ())
+    login(conn, "muhammed", "abc123", True)
+    login(conn, "adfsdas", "abc123", True)
+    removeUser(conn, "muhammed", "abc123")
+    fetchData(conn, "SELECT * FROM Car.Users", ())
+    fetchData(conn, "SELECT id, username FROM Car.Users WHERE username = ?", ("muhammed",))
+    conn.close()
 
 def test_messages():
     pass

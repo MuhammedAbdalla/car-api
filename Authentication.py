@@ -11,6 +11,7 @@ def __hash_function__(username, password):
 
     return password_hash
 
+
 def authorize():
     pass
 
@@ -83,6 +84,7 @@ def removeUser(conn, username, password):
 
     return True, None
 
+
 def fetchData(conn, query, args):
     try:
         cursor = conn.cursor()
@@ -112,12 +114,9 @@ def readCursor(cursor):
     conn.commit()
 
 '''
-if __name__ == "__main__":
-    Monitor.setup_logging()
-    logging.debug("TESTING AUTHENTICATION MODULE")
-    # Define your connection parameters
-    server = 'MUHABDALLA\\SQLEXPRESS'  # The double backslashes are necessary in Python strings
-    database = 'CAR_API'  # Replace with your database name
+
+
+def connectDB(server, database):
     conn = None
     try:
         # Create the connection string
@@ -127,16 +126,11 @@ if __name__ == "__main__":
             f'DATABASE={database};'
             'Trusted_Connection=yes;'
         )
-        fetchData(conn, "SELECT * FROM Car.Users", ())
-        # user = input("enter your username: ")
-        # password = input("enter your password: ")
-        # login(conn, "muhammed", "abc123", True)
-        # login(conn, "adfsdas", "abc123", True)
-        # removeUser(conn, "muhammed", "abc123")
-        # fetchData(conn, "SELECT * FROM Car.Users", ())
-        # fetchData(conn, "SELECT id, username FROM Car.Users WHERE username = ?", ("muhammed",))
-
     except pyodbc.Error as e:
         print(f"SQL Server Error: {e}")
         # Additional error handling or cleanup:
         conn.close()
+        return False, e
+    
+    return True, conn
+
