@@ -2,7 +2,6 @@
 # car-api
 # API.py
 
-import logging
 import random
 import asyncio
 
