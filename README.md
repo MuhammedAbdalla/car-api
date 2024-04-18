@@ -1,5 +1,5 @@
-# EC530 Self-Driving API
-
+# EC530 Car API with Self-Driving modules
+## Project 2 & Final Project
 
 ```
 API user should be able to add any wheel to the system
@@ -23,7 +23,6 @@ API user should be able to send step by step directions for driving
 **Modules.py** python class file containing: Navigation, Sensor, Detection and Chassis classes for the Car API <br>
 [WIP] **Monitor.py** set up logging and messaging in the Car API using logging and a central file <br>
 **QueueSystem.py** python implementation of a queue in software with asynchronous functions to account for sensor lag/delay <br>
-
 <hr>
 
 # testing
@@ -46,6 +45,3 @@ Only tests in docker is for QueueSystem.py along with the associated modules <br
 cd dockertest
 docker run dockerfile
 ```
-
-
-contains all the modules, methods and members needed to describe an abstract car
