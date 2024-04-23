@@ -26,13 +26,27 @@ def test_authentication():
     # Define your connection parameters
     server = 'MUHABDALLA\\SQLEXPRESS'  # The double backslashes are necessary in Python strings
     database = 'CAR_API'  # Replace with your database name
-    conn = connectDB(server, database)
-    fetchData(conn, "SELECT * FROM Car.Users", ())
-    login(conn, "muhammed", "abc123", True)
-    login(conn, "adfsdas", "abc123", True)
-    removeUser(conn, "muhammed", "abc123")
-    fetchData(conn, "SELECT * FROM Car.Users", ())
-    fetchData(conn, "SELECT id, username FROM Car.Users WHERE username = ?", ("muhammed",))
+    isConn, conn = connectDB(server, database)
+    assert isConn == True # CHECKPOINT 1; EST DB CONN
+
+    isQuery, _ = fetchData(conn, "SELECT * FROM Car.Users", ())
+    assert isQuery == True
+    
+    isPass, _ = login(conn, "muhammed", "abc123", True)
+    assert isPass == True
+
+    isPass, _ = login(conn, "adfsdas", "abc123", True)
+    assert isPass == True
+
+    isPass, _ = removeUser(conn, "muhammed", "abc123")
+    assert isPass == True
+
+    isQuery, _ = fetchData(conn, "SELECT * FROM Car.Users", ())
+    assert isQuery == True
+
+    isQuery, _ = fetchData(conn, "SELECT id, username FROM Car.Users WHERE username = ?", ("muhammed",))
+    assert isQuery == True
+    
     conn.close()
 
 def test_messages():

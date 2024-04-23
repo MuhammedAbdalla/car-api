@@ -1,8 +1,8 @@
 # git ignore file
 
 # files to ignore
-# *.txt
-# .coverage
+*.txt
+.coverage
 
 # folders to ignore
 __pycache__/
@@ -11,10 +11,11 @@ htmlcov/
 SQL/
 logs/
 
-# any folder with pycache
-# tests/__pycache__/
-# tests/.pytest_cache/
+# any folder with __pycache__/, .pytest_cache/ and logs/
+*/__pycache__/
+*/.pytest_cache/
+*/logs/
 
 
-# !requirements.txt
-# !SQL/car_api_schema
+!requirements.txt
+!SQL/car_api_schema
