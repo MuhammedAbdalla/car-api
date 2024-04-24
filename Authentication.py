@@ -125,7 +125,7 @@ def connectDB(server, database):
             f'SERVER={server};'
             f'DATABASE={database};'
             'UID=u45097807;'
-            'PWD=u45097807'
+            'PWD=u45097807;'
         )
     except pyodbc.Error as e:
         print(f"SQL Server Error: {e}")
