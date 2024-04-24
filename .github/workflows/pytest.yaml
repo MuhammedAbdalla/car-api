@@ -1,6 +1,10 @@
 name: run pytest on pull request
 
-on: push
+on: 
+  push:
+    branches:
+      - workflow-branch
+
 
 jobs:
   tests:
@@ -13,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.9'
       
       - name: Install dependences
         run: pip install -r requirements.txt
