@@ -124,12 +124,12 @@ def connectDB(server, database):
             'DRIVER={ODBC Driver 17 for SQL Server};'
             f'SERVER={server};'
             f'DATABASE={database};'
-            'Trusted_Connection=yes;'
+            'UID=u45097807;'
+            'PWD=u45097807'
         )
     except pyodbc.Error as e:
         print(f"SQL Server Error: {e}")
         # Additional error handling or cleanup:
-        conn.close()
         return False, e
     
     return True, conn
