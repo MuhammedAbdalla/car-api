@@ -24,7 +24,7 @@ def test_format():
 def test_authentication():
     logging.debug("TESTING AUTHENTICATION MODULE")
     # Define your connection parameters
-    server = 'MUHABDALLA\\SQLEXPRESS'  # The double backslashes are necessary in Python strings
+    server = 'localhost'  # The double backslashes are necessary in Python strings
     database = 'CAR_API'  # Replace with your database name
     isConn, conn = connectDB(server, database)
     assert isConn == True # CHECKPOINT 1; EST DB CONN
