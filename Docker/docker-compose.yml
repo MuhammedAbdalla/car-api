@@ -1,6 +1,4 @@
-version: "4.21"
 services:
-
   # use the pre-build docker image from msft for sql_server_db container
   sql-server-db:
     container_name: sql_server_db
@@ -10,15 +8,15 @@ services:
     volumes:
       - ../API_DB/schema.sql:/docker-entrypoint-initdb.d/schema.sql  # Mount the SQL script
     environment:
-      MSSQL_SA_PASSWORD: "U45097807@Stuvi"
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: Express
+      - MSSQL_SA_PASSWORD=MA1234@stuvi
+      - ACCEPT_EULA=Y
     networks:
       - app-network
+    command: /bin/bash -c "/opt/mssql-tools/bin/sqlcmd -S localhost -l 30 -U sa -P MA1234@stuvi -d master -i /docker-entrypoint-initdb.d/schema.sql"
 
   # build the Dockerfile.python container
   python-app:
-    container_name: test_application
+    container_name: car-api
     image: car-api:v1.0
     build:
       context: tmp-context/

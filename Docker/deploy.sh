@@ -8,6 +8,8 @@ cp ../Modules.py tmp-context
 cp ../Monitor.py tmp-context
 cp ../QueueSystem.py tmp-context
 cp ../tests/tests.py tmp-context
+cp ../app.py tmp-context
+cp ../self_driving_car.py tmp-context
 
 # Build the image from the temporary directory
 docker-compose build

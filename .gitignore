@@ -8,9 +8,9 @@
 __pycache__/
 .pytest_cache/
 htmlcov/
-SQL/
 logs/
-
+.venv/ 
+.vs/
 # any folder with __pycache__/, .pytest_cache/ and logs/
 */__pycache__/
 */.pytest_cache/

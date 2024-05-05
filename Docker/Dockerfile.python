@@ -1,22 +1,33 @@
 # Use an official Python runtime as the base image
 FROM python:3.9
 
+
+# Install ODBC driver and dependencies
+RUN apt-get update && \
+    apt-get install -y \
+        unixodbc \
+        unixodbc-dev \
+        && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install ODBC Driver 17 for SQL Server
+RUN apt-get update && \
+    apt-get install -y \
+        curl \
+        gnupg \
+        && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+    apt-get update && \
+    ACCEPT_EULA=Y apt-get install -y msodbcsql17
+
 # Set the working directory in the container
 WORKDIR /app
-
-# Copy the Python script from the host to the container
-COPY requirements.txt .
-
+ENV ENVIRONMENT=DOCKER_CONTAINER
 # Install any dependencies required by the Python script
-COPY Authentication.py .
-COPY Modules.py .
-COPY Monitor.py .
-COPY QueueSystem.py .
-COPY tests.py .
-
-
-# Install ODBC dependencies
-RUN apt-get update && apt-get install -y unixodbc unixodbc-dev
+# copy .py and requirements.txt inside tmp-context folder
+COPY . .
 
 # Install python packages
 RUN pip install --no-cache-dir -r requirements.txt

@@ -22,7 +22,7 @@ def login(conn, username, password, reg=False):
     # check for spaces and check for 1 OR 1
     password_hash = __hash_function__(username, password)
     if reg:
-        register(conn, username, password_hash)
+        return register(conn, username, password_hash)
     else:
         try:
             cursor = conn.cursor()
@@ -38,7 +38,7 @@ def login(conn, username, password, reg=False):
             if username in row and password_hash in row:
                 return True, None
         except pyodbc.Error as e:
-            print(f"SQL Server Error: {e}")
+            Monitor.send_sys_err(f"SQL Server Error: {e}", login.__name__, logging.ERROR)
             return False, e
 
     return False, None
@@ -56,9 +56,8 @@ def register(conn, username, password_hash):
 
         # failure registration: duplicates
         if len(cursor.fetchall()) > 0:
-            logging.warning("SQL DB: Car.Users: duplicates users found")
-            print("duplicate users found")
-            return False
+            Monitor.send_sys_err("SQL DB: Car.Users: duplicates users found", register.__name__, logging.WARN)
+            return False, None
         
         # successful registration
         query = f'''
@@ -67,14 +66,15 @@ def register(conn, username, password_hash):
         '''
         cursor.execute(query, (username, password_hash, 0b001))
         conn.commit()
-        return True
+        return True, None
+    
     except pyodbc.Error as e:
-        print(f"SQL Server Error: {e}")
+        Monitor.send_sys_err(f"SQL Server Error: {e}", register.__name__, logging.ERROR)
         return False, e
     
 
 def removeUser(conn, username, password):
-    print("removing user:", username)
+    Monitor.send_sys_log(f"removing user: {username}", removeUser.__name__)
     try:
         password_hash = __hash_function__(username, password)
         cursor = conn.cursor()
@@ -82,7 +82,7 @@ def removeUser(conn, username, password):
         cursor.execute(query, (username, password_hash))
         conn.commit()
     except pyodbc.Error as e:
-        print(f"SQL Server Error: {e}")
+        Monitor.send_sys_err(f"SQL Server Error: {e}", removeUser.__name__, logging.ERROR)
         return False, e
 
     return True, None
@@ -95,7 +95,7 @@ def fetchData(conn, query, args):
         cursor.execute(query, args)
         readCursor(cursor)
     except pyodbc.Error as e:
-        print(f"SQL Server Error: {e}")
+        Monitor.send_sys_err(f"SQL Server Error: {e}", fetchData.__name__, logging.ERROR)
         return False, e
     
     return True, None
@@ -125,7 +125,8 @@ def findCursorData(cursor, data):
 '''
 
 
-def connectDB(server, uid, pwd):
+def connectDB(server, uid, pwd, trusted):
+    Monitor.send_sys_msg(f"connecting to {server} uid:{uid} pwd:{pwd}")
     conn = None
     try:
         # Create the connection string
@@ -135,10 +136,10 @@ def connectDB(server, uid, pwd):
             f'DATABASE=CAR_API;'
             f'UID={uid};'
             f'PWD={pwd};'
-            'Trusted_Connection=yes;'
+            f'Trusted_Connection={trusted};'
         )
     except pyodbc.Error as e:
-        print(f"SQL Server Error: {e}")
+        Monitor.send_sys_err(f"SQL Server Error: {e}", connectDB.__name__, logging.CRITICAL)
         # Additional error handling or cleanup:
         return False, e
     

@@ -1,9 +1,0 @@
-DROP TABLE Sensors.LiDAR;
-DROP TABLE Sensors.Camera;
-DROP TABLE Car.Users;
-DROP TABLE Car.DetectedObjects;
-DROP TABLE Car.NavigationRoutes;
-DROP TABLE Car.CollisionDetection;
-DROP TABLE Logs.AccessLogs;
-DROP TABLE Logs.WheelCommands;
-DROP TABLE Logs.SystemHealth;

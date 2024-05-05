@@ -5,22 +5,23 @@
 import random
 import asyncio
 import Monitor
+import threading
 
 '''
 User Stories:
 
-    API user should be able to add any wheel to the system
-    API user should be able to add any LiDAR to the system
-    API user should be able to add any obstacle detection system or sensor to the system
-    API user should be able to add any camera or visual device to the system
-    API user should be able to add any visual object detection to the system
-    API user should be able to define starting point and end point of any journey
+        API user should be able to add any wheel to the system
+        API user should be able to add any LiDAR to the system
+        API user should be able to add any obstacle detection system or sensor to the system
+        API user should be able to add any camera or visual device to the system
+        API user should be able to add any visual object detection to the system
+        API user should be able to define starting point and end point of any journey
     API user should be able to interrupt any journey at any time
-    API user should be able to get updates on the journey or notifications
-    API user should be able to add any path planning module to the system
-    API user should be able to get monitoring data anytime requested
-    API user should be able to set the speed
-    API user should be able to send step by step directions for driving
+        API user should be able to get updates on the journey or notifications
+        API user should be able to add any path planning module to the system
+        API user should be able to get monitoring data anytime requested
+        API user should be able to set the speed
+        API user should be able to send step by step directions for driving
 
 '''
 
@@ -37,7 +38,7 @@ User Stories:
         0 represents no distance traveled or no turn
         limits are bounded by the wheel turn limit
 '''
-class Path():
+class Path:
     path = None
     def __init__(self, distance, direction):
         self.path = (distance, direction)
@@ -57,9 +58,12 @@ class Path():
         navigate()
         
 '''
-class Navigation():
-    def __init__(self):
+class Navigation:
+    def __init__(self, threshold_redirect):
         self.paths = []
+        self.distanceTraveled = 0
+        self.orientation = 0
+        self.threshold_redirect = threshold_redirect
     
     def addPath(self, path: Path):
         if isinstance(path, Path):
@@ -69,8 +73,27 @@ class Navigation():
         return self.paths.pop(0)
 
     def execute(self):
-        Monitor.send_sys_msg(f"executing navigation\n# paths: {len(self.paths)}")
+        Monitor.send_sys_msg(f"enabling collision detection")
+        cdSystem = CollisionDetection(self.threshold_redirect)
+        cdSystem.start()
+        self.enabled = True
 
+        def start():
+            Monitor.send_sys_msg(f"executing navigation\n# paths: {len(self.paths)}")
+            while self.paths and self.enabled:
+                distance, direction = self.stepPath().path
+
+                self.distanceTraveled += distance
+                self.orientation += direction % 360
+                Monitor.send_sys_msg(f" path: {distance}, {direction}\n \
+                                        total distance: {self.distanceTraveled} \
+                                        car orientation: {self.orientation} \
+                                ")
+        threading.Thread(target=start(), args=(), daemon=True).start()
+    
+    def stop(self):
+        self.enabled = False
+             
 
 '''
     module:     Sensor
@@ -82,9 +105,10 @@ class Navigation():
 
     methods:    
             __init__()
+            
 
 '''
-class Sensor():
+class Sensor:
     sensorName = None
     sensorType = None
     sensorPort = None
@@ -95,7 +119,7 @@ class Sensor():
             self.sensorType = sensorType
             self.sensorPort = sensorPort
             self.testMode = testMode
-            
+        
     async def getData(self):
         if self.testMode:
             await asyncio.sleep(random.random())
@@ -122,24 +146,37 @@ class Sensor():
 
 
 '''
-class CollisionDetection():
+class CollisionDetection:
     sensors = None
     threshold_redirect = None
     def __init__(self, threshold_redirect):
         self.sensors = []
         self.threshold_redirect = threshold_redirect
-        
-    def detect(self):
-        pass
+    
+    def addSensor(self, sensor: Sensor):
+        if isinstance(sensor, Sensor):
+            self.sensors.append(sensor)
 
 
-class Wheel():
+    def start(self):
+        async def detect(sensor, threshold_redirect):
+            while True:
+                result = await sensor.getData()
+                if result <= threshold_redirect:
+                    Monitor.send_sys_msg(f" obstacle detected: {result} units ahead")
+                    
+
+        for sensor in self.sensors:
+            threading.Thread(target=detect, args=(sensor,self.threshold_redirect), daemon=True).start()
+
+
+class Wheel:
     name = None
     speed = None
     direction = None
     reverse = None
 
-    def __init__(self, name, reverse):
+    def __init__(self, name, reverse=False):
         self.name = name
         self.speed = 0
         self.direction = 0
@@ -167,14 +204,14 @@ class Wheel():
         self.reverse = val
 
 
-class Chassis():
+class Chassis:
     wheels = None
     wheelGroups = None
     tankMode = False
 
     def __init__(self):
         self.wheels = []
-        self.wheelGroups = []
+        self.wheelGroups = {}
         pass
     
     def addWheel(self, nameWheel):
@@ -195,9 +232,16 @@ class Chassis():
     
     def createWheelGroup(self, wheelGroupID, wheels):
         self.wheels.extend(wheels)
-        self.wheelGroups.append({"id":wheelGroupID, "wheels":wheels})
+        self.wheelGroups[wheelGroupID] = wheels
         self.updateChassis()
     
+    def setAttribute(self, wheelGroupID, attr, val):
+        for wheel in self.wheelGroups[wheelGroupID]:
+            if attr == "speed":
+                wheel.setSpeed(val)
+            elif attr == "direction":
+                wheel.setDirection(val)
+
     def updateChassis(self):
         pass
         

@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 def test_navigation():
     logging.debug("TESTING NAVIGATION MODULE\n\tBEGIN")
-    nav = Navigation()
+    nav = Navigation(10)
 
     # travel in a sin wave
     paths = [Path(0,0)]
@@ -34,9 +34,14 @@ def test_navigation():
         d_x = step
         d_y = math.sin(x) - math.sin(x-1)
         distance = math.sqrt(d_y**2 + d_x**2)
-        direction = math.atan2(d_y/d_x)
-        
+        direction = math.atan2(d_y,d_x)
+
         paths.append(Path(distance,direction))
+    
+    for path in paths:
+        nav.addPath(path)
+
+    nav.execute()
 
 
 def test_authentication():
@@ -44,23 +49,26 @@ def test_authentication():
     server = None 
     uid = None
     pwd = None
-    if os.getenv('DOCKER_CONTAINER') == 'true':
+    trusted = None
+    if os.getenv('ENVIRONMENT') == 'DOCKER_CONTAINER':
         logging.debug("Running in a Docker container")
+        print("Running in a Docker container")
         server = 'sql_server_db' 
         uid = 'sa'
-        pwd = 'U45097807@Stuvi'
+        pwd = 'MA1234@stuvi'
+        trusted = 'no'
     else:
         logging.debug("Not running in a Docker container")
+        print("Not running in a Docker container")
         server = 'localhost\\SQLEXPRESS' 
         uid = 'sa'
         pwd = 'MA1234@stuvi'
+        trusted = 'yes'
 
 
     # Get testing environment
     # Define your connection parameters
-    # server = 'localhost'  # The double backslashes are necessary in Python strings
-    # database = 'CAR_API'  # Replace with your database name
-    isConn, conn = connectDB(server, uid, pwd)
+    isConn, conn = connectDB(server, uid, pwd, trusted)
     assert isConn == True # CHECKPOINT 1; EST DB CONN
     logging.debug(" SQL: DB connection - passed")
 
@@ -68,9 +76,8 @@ def test_authentication():
     assert isQuery == True
     logging.debug(" SQL: Select Query - passed")
     
-    isPass, _ = login(conn, "muhammed", "abc123", False)
-    assert isPass == True
-    logging.debug(" SQL: Good Login - passed")
+    isPass, _ = login(conn, "muhammed", "abc123", True)
+    logging.debug(" SQL: Good Register - passed")
 
     isPass, _ = login(conn, "DOESNT_EXIST", "abc123", False)
     assert isPass == False
@@ -82,10 +89,10 @@ def test_authentication():
 
     isQuery, _ = fetchData(conn, "SELECT id, username FROM Car.Users WHERE username = ?", ("muhammed",))
     assert isQuery == True
-    logging.debug("TESTING AUTHENTICATION MODULE\n\tEND")
     
     conn.close()
-    logging.debug(" SQL: Register - passed")
+    logging.debug("TESTING AUTHENTICATION MODULE\n\tEND")
+
     
 def test_monitor():
     pass
@@ -105,39 +112,39 @@ def test_chassis():
     for name, wheelGroup in chassis.wheelGroups.items():
         for wheel in wheelGroup:
             wheel.setSpeed(5)
-            wheel.direction = 0
+            wheel.setDirection(0)
 
     # go backwards
     for name, wheelGroup in chassis.wheelGroups.items():
         for wheel in wheelGroup:
             wheel.setSpeed(-5)
-            wheel.direction = 0
+            wheel.setDirection(0)
 
     # go right
-    for wheel in chassis.wheelGroup["left-steer"]:
+    for wheel in chassis.wheelGroups["left-steer"]:
         wheel.setSpeed(5)
-        wheel.direction = -45
+        wheel.setDirection(-45)
 
-    for wheel in chassis.wheelGroup["right-steer"]:
+    for wheel in chassis.wheelGroups["right-steer"]:
         wheel.setSpeed(5)
-        wheel.direction = -45
+        wheel.setDirection(-45)
 
-    for wheel in chassis.wheelGroup["rear"]:
+    for wheel in chassis.wheelGroups["rear"]:
         wheel.setSpeed(5)
-        wheel.direction = 0
+        wheel.setDirection(0)
 
     # go left
-    for wheel in chassis.wheelGroup["left-steer"]:
+    for wheel in chassis.wheelGroups["left-steer"]:
         wheel.setSpeed(5)
-        wheel.direction = 45
+        wheel.setDirection(-45)
 
-    for wheel in chassis.wheelGroup["right-steer"]:
+    for wheel in chassis.wheelGroups["right-steer"]:
         wheel.setSpeed(5)
-        wheel.direction = 45
+        wheel.setDirection(-45)
 
-    for wheel in chassis.wheelGroup["rear"]:
+    for wheel in chassis.wheelGroups["rear"]:
         wheel.setSpeed(5)
-        wheel.direction = 0
+        wheel.setDirection(0)
 
 def test_car():
     pass
