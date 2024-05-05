@@ -21,23 +21,27 @@ def login(conn, username, password, reg=False):
     # print(username, password)
     # check for spaces and check for 1 OR 1
     password_hash = __hash_function__(username, password)
-    try:
-        cursor = conn.cursor()
-        query = f''' 
-            SELECT username, password_hash FROM Car.Users
-            WHERE username = ? AND password_hash = ?
-        '''
-        cursor.execute(query, (username, password_hash))
-    except pyodbc.Error as e:
-        print(f"SQL Server Error: {e}")
-        return False, e
-
     if reg:
         register(conn, username, password_hash)
-    
-    # readCursor(cursor)
+    else:
+        try:
+            cursor = conn.cursor()
+            query = f''' 
+                SELECT username, password_hash FROM Car.Users
+                WHERE username = ? AND password_hash = ?
+            '''
+            cursor.execute(query, (username, password_hash))
+            row = findCursorData(cursor, username)
+            
+            if row == None:
+                return False, None
+            if username in row and password_hash in row:
+                return True, None
+        except pyodbc.Error as e:
+            print(f"SQL Server Error: {e}")
+            return False, e
 
-    return True, None
+    return False, None
 
 
 def register(conn, username, password_hash):
@@ -63,12 +67,11 @@ def register(conn, username, password_hash):
         '''
         cursor.execute(query, (username, password_hash, 0b001))
         conn.commit()
+        return True
     except pyodbc.Error as e:
         print(f"SQL Server Error: {e}")
         return False, e
     
-    return True, None
-
 
 def removeUser(conn, username, password):
     print("removing user:", username)
@@ -102,6 +105,12 @@ def readCursor(cursor):
     for row in cursor:
         print(row)
 
+def findCursorData(cursor, data):
+    for row in cursor:
+        if data in row:
+            return row
+    return None
+
 '''
     examples:
 
@@ -116,16 +125,17 @@ def readCursor(cursor):
 '''
 
 
-def connectDB(server, database):
+def connectDB(server, uid, pwd):
     conn = None
     try:
         # Create the connection string
         conn = pyodbc.connect(
             'DRIVER={ODBC Driver 17 for SQL Server};'
             f'SERVER={server};'
-            f'DATABASE={database};'
-            'UID=u45097807;'
-            'PWD=u45097807;'
+            f'DATABASE=CAR_API;'
+            f'UID={uid};'
+            f'PWD={pwd};'
+            'Trusted_Connection=yes;'
         )
     except pyodbc.Error as e:
         print(f"SQL Server Error: {e}")

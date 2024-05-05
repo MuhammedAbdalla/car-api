@@ -1,0 +1,35 @@
+version: "4.21"
+services:
+
+  # use the pre-build docker image from msft for sql_server_db container
+  sql-server-db:
+    container_name: sql_server_db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1433:1433"
+    volumes:
+      - ../API_DB/schema.sql:/docker-entrypoint-initdb.d/schema.sql  # Mount the SQL script
+    environment:
+      MSSQL_SA_PASSWORD: "U45097807@Stuvi"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+    networks:
+      - app-network
+
+  # build the Dockerfile.python container
+  python-app:
+    container_name: test_application
+    image: car-api:v1.0
+    build:
+      context: tmp-context/
+      dockerfile: ../Dockerfile.python
+    depends_on:
+      - sql-server-db
+    ports:
+    - 8000:8000
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

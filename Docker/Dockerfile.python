@@ -1,0 +1,25 @@
+# Use an official Python runtime as the base image
+FROM python:3.9
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the Python script from the host to the container
+COPY requirements.txt .
+
+# Install any dependencies required by the Python script
+COPY Authentication.py .
+COPY Modules.py .
+COPY Monitor.py .
+COPY QueueSystem.py .
+COPY tests.py .
+
+
+# Install ODBC dependencies
+RUN apt-get update && apt-get install -y unixodbc unixodbc-dev
+
+# Install python packages
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Specify the command to run your script
+CMD ["coverage", "run", "-m", "pytest", "tests.py"]

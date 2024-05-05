@@ -4,6 +4,7 @@
 
 import random
 import asyncio
+import Monitor
 
 '''
 User Stories:
@@ -57,7 +58,6 @@ class Path():
         
 '''
 class Navigation():
-    paths = None
     def __init__(self):
         self.paths = []
     
@@ -65,9 +65,11 @@ class Navigation():
         if isinstance(path, Path):
             self.paths.append(path)
 
-    def getPath(self):
+    def stepPath(self):
         return self.paths.pop(0)
 
+    def execute(self):
+        Monitor.send_sys_msg(f"executing navigation\n# paths: {len(self.paths)}")
 
 
 '''
@@ -127,7 +129,6 @@ class CollisionDetection():
         self.sensors = []
         self.threshold_redirect = threshold_redirect
         
-
     def detect(self):
         pass
 
@@ -138,11 +139,11 @@ class Wheel():
     direction = None
     reverse = None
 
-    def __init__(self, name):
+    def __init__(self, name, reverse):
         self.name = name
         self.speed = 0
         self.direction = 0
-        self.reverse = False
+        self.reverse = reverse
 
     def getSpeed(self):
         return self.speed
@@ -152,7 +153,10 @@ class Wheel():
             
     def setSpeed(self, val):
         # try catch for numerical value, catch -> error log
-        self.speed = val
+        if self.reverse:
+            self.speed = -val
+        else:
+            self.speed = val
 
     def setDirection(self, val):
         # try catch for numerical value, catch -> error log
@@ -161,6 +165,7 @@ class Wheel():
     def setReverse(self, val):
         # try catch for boolean value, catch -> error log
         self.reverse = val
+
 
 class Chassis():
     wheels = None
@@ -189,8 +194,10 @@ class Chassis():
                 return wheel
     
     def createWheelGroup(self, wheelGroupID, wheels):
-        self.wheelGroups.append({"id":wheelGroupID, "wheels":[]})
+        self.wheels.extend(wheels)
+        self.wheelGroups.append({"id":wheelGroupID, "wheels":wheels})
         self.updateChassis()
     
     def updateChassis(self):
         pass
+        

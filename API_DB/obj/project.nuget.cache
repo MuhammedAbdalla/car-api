@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "dkpZh0eB3h0I9aDFhCxYS10AOAmmog94Ym/x+QRx68AjSwQFtX26rGu6nmhUtKuyTCECJB2YGkGgE1gwJ+OKJg==",
+  "success": true,
+  "projectFilePath": "c:\\Users\\Muhab\\OneDrive\\Classes\\EC530\\car-api\\API_DB\\API_DB.sqlproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Muhab\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.0\\microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
+    "C:\\Users\\Muhab\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net46\\1.0.0\\microsoft.netframework.referenceassemblies.net46.1.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
