@@ -2,3 +2,23 @@
 2024-03-31 15:38:43,499 [30952 root] WARNING: SQL DB: Car.Users: duplicates found
 2024-03-31 15:39:07,948 [37584 root] WARNING: SQL DB: Car.Users: duplicates found
 2024-03-31 15:39:14,260 [39188 root] WARNING: SQL DB: Car.Users: duplicates found
+2024-05-05 21:25:57,532 [15277 root] INFO: connecting to localhost\\sqlexpress uid:muhammed pwd:abc123
+2024-05-05 21:25:57,537 [15277 root] CRITICAL: [91m      <connectDB> : SQL Server Error: ('01000', "[01000] [unixODBC][Driver Manager]Can't open lib 'ODBC Driver 17 for SQL Server' : file not found (0) (SQLDriverConnect)")  [0m
+2024-05-05 21:43:19,333 [35260 root] INFO: connecting to localhost\\sqlexpress uid:muhammed pwd:abc123
+2024-05-05 21:43:19,372 [35260 root] CRITICAL: [91m      <connectDB> : SQL Server Error: ('08001', '[08001] [Microsoft][ODBC Driver 17 for SQL Server]The client cannot connect to the server because the requested instance was not available. Use SQL Server Configuration Manager to make sure the SQL Server instance is configured correctly.  (0) (SQLDriverConnect)')  [0m
+2024-05-05 21:44:35,475 [44304 root] INFO: connecting to localhost\\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:44:35,497 [44304 root] CRITICAL: [91m      <connectDB> : SQL Server Error: ('08001', '[08001] [Microsoft][ODBC Driver 17 for SQL Server]The client cannot connect to the server because the requested instance was not available. Use SQL Server Configuration Manager to make sure the SQL Server instance is configured correctly.  (0) (SQLDriverConnect)')  [0m
+2024-05-05 21:45:04,752 [36652 root] INFO: connecting to localhost\\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:45:04,780 [36652 root] CRITICAL: [91m      <connectDB> : SQL Server Error: ('08001', '[08001] [Microsoft][ODBC Driver 17 for SQL Server]The client cannot connect to the server because the requested instance was not available. Use SQL Server Configuration Manager to make sure the SQL Server instance is configured correctly.  (0) (SQLDriverConnect)')  [0m
+2024-05-05 21:45:57,289 [31964 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:46:51,997 [11864 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:47:11,717 [30980 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:48:04,955 [35284 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:48:19,536 [40948 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:49:14,347 [3844 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:49:20,766 [28960 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:49:26,102 [30748 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:49:34,935 [31132 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:49:53,022 [31132 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:50:01,700 [41060 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi
+2024-05-05 21:50:17,764 [32784 root] INFO: connecting to localhost\sqlexpress uid:sa pwd:MA1234@stuvi

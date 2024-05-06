@@ -1,13 +1,13 @@
 # requires Sensors module from Module
 from Modules import Sensor
-from Monitor import setup_logging
+from Monitor import *
 import logging
 import queue
 import asyncio
 
 setup_logging()
 
-class SensorQueue:
+class SensorQueue():
     sensors = None
     timeout = None
 
@@ -17,7 +17,7 @@ class SensorQueue:
 
     def addSensor(self, sensor: Sensor):
         if not isinstance(sensor, Sensor):
-            logging.warning(f"Sensor{sensor.name} must be an instance of SensorBase")
+            send_sys_err(f"Sensor{sensor.name} must be an instance of SensorBase", "addSensor", logging.WARN)
             raise ValueError(f"Sensor{sensor.name} must be an instance of SensorBase")
         self.q.put(sensor)
 
@@ -25,7 +25,7 @@ class SensorQueue:
         try:
             return await asyncio.wait_for(sensor.getData(), self.timeout)
         except asyncio.TimeoutError:
-            logging.warning(f"Timeout: Failed to retrieve data from {sensor.name}")
+            send_sys_err(f"Timeout: Failed to retrieve data from {sensor.name}", "addSensor", logging.WARN)
             return f"Timeout: Failed to retrieve data from {sensor.name}"
     
     async def processQueue(self):

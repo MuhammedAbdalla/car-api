@@ -1,25 +1,27 @@
 services:
   # use the pre-build docker image from msft for sql_server_db container
   sql-server-db:
-    container_name: sql_server_db
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server-db
+    build:
+      context: tmp-sql/
+      dockerfile: ../Dockerfile.sql
     ports:
       - "1433:1433"
-    volumes:
-      - ../API_DB/schema.sql:/docker-entrypoint-initdb.d/schema.sql  # Mount the SQL script
-    environment:
-      - MSSQL_SA_PASSWORD=MA1234@stuvi
-      - ACCEPT_EULA=Y
+    # volumes:
+    #   - ../API_DB/schema.sql:/docker-entrypoint-initdb.d/schema.sql  # Mount the SQL script
+    # environment:
+    #   - MSSQL_SA_PASSWORD=MA1234@stuvi
+    #   - ACCEPT_EULA=Y
     networks:
       - app-network
-    command: /bin/bash -c "/opt/mssql-tools/bin/sqlcmd -S localhost -l 30 -U sa -P MA1234@stuvi -d master -i /docker-entrypoint-initdb.d/schema.sql"
+    # command: /bin/bash -c "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P MA1234@stuvi -d master -i /docker-entrypoint-initdb.d/schema.sql"
 
   # build the Dockerfile.python container
-  python-app:
+  car-api:
     container_name: car-api
     image: car-api:v1.0
     build:
-      context: tmp-context/
+      context: tmp-app/
       dockerfile: ../Dockerfile.python
     depends_on:
       - sql-server-db

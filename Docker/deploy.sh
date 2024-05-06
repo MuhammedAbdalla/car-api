@@ -1,18 +1,27 @@
 # Create a temporary directory to store the build context
-mkdir -p tmp-context
+TMP_APP="tmp-app"
+TMP_SQL="tmp-sql"
+
+mkdir -p "$TMP_APP"
+mkdir -p "$TMP_SQL"
 
 # Copy the file that you need to the temporary directory
-cp ../requirements.txt tmp-context
-cp ../Authentication.py tmp-context
-cp ../Modules.py tmp-context
-cp ../Monitor.py tmp-context
-cp ../QueueSystem.py tmp-context
-cp ../tests/tests.py tmp-context
-cp ../app.py tmp-context
-cp ../self_driving_car.py tmp-context
+cp ../requirements.txt "$TMP_APP"
+cp ../Authentication.py "$TMP_APP"
+cp ../Modules.py "$TMP_APP"
+cp ../Monitor.py "$TMP_APP"
+cp ../QueueSystem.py "$TMP_APP"
+cp ../tests/tests.py "$TMP_APP"
+cp ../self_driving_car.py "$TMP_APP"
+
+cp ../API_DB/schema.sql "$TMP_SQL"
+cp entrypoint.sh "$TMP_SQL"
+cp init.sh "$TMP_SQL"
 
 # Build the image from the temporary directory
 docker-compose build
 
 # Remove the temporary directory
-rm -rf tmp-context
+rm -rf tmp-app
+rm -rf tmp-sql
+

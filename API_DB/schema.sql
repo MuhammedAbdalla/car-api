@@ -20,6 +20,7 @@ END
 GO
 
 USE CAR_API
+GO 
 
 IF NOT EXISTS (
     SELECT * 

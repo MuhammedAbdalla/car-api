@@ -38,7 +38,7 @@ User Stories:
         0 represents no distance traveled or no turn
         limits are bounded by the wheel turn limit
 '''
-class Path:
+class Path():
     path = None
     def __init__(self, distance, direction):
         self.path = (distance, direction)
@@ -58,7 +58,7 @@ class Path:
         navigate()
         
 '''
-class Navigation:
+class Navigation():
     def __init__(self, threshold_redirect):
         self.paths = []
         self.distanceTraveled = 0
@@ -108,7 +108,7 @@ class Navigation:
             
 
 '''
-class Sensor:
+class Sensor():
     sensorName = None
     sensorType = None
     sensorPort = None
@@ -146,7 +146,7 @@ class Sensor:
 
 
 '''
-class CollisionDetection:
+class CollisionDetection():
     sensors = None
     threshold_redirect = None
     def __init__(self, threshold_redirect):
@@ -170,7 +170,7 @@ class CollisionDetection:
             threading.Thread(target=detect, args=(sensor,self.threshold_redirect), daemon=True).start()
 
 
-class Wheel:
+class Wheel():
     name = None
     speed = None
     direction = None
@@ -204,7 +204,7 @@ class Wheel:
         self.reverse = val
 
 
-class Chassis:
+class Chassis():
     wheels = None
     wheelGroups = None
     tankMode = False
@@ -235,6 +235,14 @@ class Chassis:
         self.wheelGroups[wheelGroupID] = wheels
         self.updateChassis()
     
+    def addToWheelGroup(self, wheelGroupID, wheel):
+        if self.wheelGroups.get(wheelGroupID) == None:
+            self.wheelGroups[wheelGroupID] = []
+            
+        self.wheels.append(wheel)
+        self.wheelGroups[wheelGroupID].append(wheel)
+        self.updateChassis()
+
     def setAttribute(self, wheelGroupID, attr, val):
         for wheel in self.wheelGroups[wheelGroupID]:
             if attr == "speed":
