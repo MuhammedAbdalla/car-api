@@ -16,21 +16,37 @@ API user should be able to set the speed
 API user should be able to send step by step directions for driving
 ```
 # the code
+### self_driving_car.py
+the main python file to host the API <br>
 
-**app.py** the main python file to host the API <br>
-**Authentication.py** register or login to the car API with user & password <br>
-[WIP] **Messages.py** messages class to construct and setup info, warning & error messages <br>
-**Modules.py** python class file containing: Navigation, Sensor, Detection and Chassis classes for the Car API <br>
-[WIP] **Monitor.py** set up logging and messaging in the Car API using logging and a central file <br>
-**QueueSystem.py** python implementation of a queue in software with asynchronous functions to account for sensor lag/delay <br>
+### Authentication.py 
+register or login to the car API with user & password <br>
+
+### Monitor.py 
+Monitor class to construct and setup info, warning & error messages <br>
+Also abstracts from logging class to provide user messages, errors and failures in the API <br>
+
+### Modules.py 
+python class file containing: Navigation, Sensor, Detection and Chassis classes for the Car API <br>
+
+### QueueSystem.py
+python implementation of a queue in software with asynchronous functions to account for sensor lag/delay <br>
+
+currently this API is hosted on the local machine due to the nature of embedded system projects. HTTP frameworks to host car controls is a  future implementation <br>
+To run car API, you need microsoft SQL server on your machine so the database schema executes into a new database called CAR_API <br>
+
+```
+python self_driving_car.py
+```
+
 <hr>
 
 # testing
 
-### dev testing
+## dev testing
 **pytest.ini** defines the parameters in which to log all levels from DEBUG into logs/pytest.log <br> 
-[WIP] tests for every module + app.py <br>
-pytest
+tests for every module + app.py <br>
+using pytest
 ```
 pytest tests/tests.py
 ```
@@ -38,10 +54,15 @@ coverage testing over pytest
 ```
 coverage run -m pytest tests/tests.py
 ```
-### docker testing
-Only tests in docker is for QueueSystem.py along with the associated modules <br>
-[WIP] tests for every module + app.py
+### [WIP] docker testing
+API has test cases specifically for Monitor, Navigation, Wheels and Sensors <br>
+Authentication for Docker is not responding due to permissio errors with sql container and mssql settings <br>
+To deploy the API: <br>
 ```
-cd dockertest
-docker run dockerfile
+>> cd Docker
+>> bash
+$ ./deploy.sh
+$ docker-compose up
 ```
+
+
