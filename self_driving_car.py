@@ -36,8 +36,6 @@ class Car():
                             cdSys.addSensor(Sensor(components[0],components[1],components[2], True))
                         else:
                             sensors.addSensor(Sensor(components[0],components[1],components[2], True))
-        
-            print(chassis.__format__())
 
 if __name__ == "__main__":
     car = Car()
